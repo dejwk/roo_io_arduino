@@ -1,0 +1,35 @@
+{
+    "name": "roo_io_arduino",
+    "description": "Arduino filesystem adapters for the roo_io library.",
+    "keywords": [
+    ],
+    "authors": [
+        {
+            "name": "Dawid Kurzyniec",
+            "email": "dejwk.oss@gmail.com",
+            "maintainer": true
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dejwk/roo_io_arduino"
+    },
+    "version": "1.0.0",
+    "homepage": "https://github.com/dejwk/roo_io_arduino",
+    "frameworks": [
+        "Arduino"
+    ],
+    "build": {
+        "srcDir": "src",
+        "srcFilter": "+<*> -<examples> -<benchmarks> -<doc> -<test>"
+    },
+    "examples": [
+        "examples/**/*.ino"
+    ],
+    "dependencies": {
+        "dejwk/roo_io": ">0",
+        "FS": ">0",
+        "SD": ">0",
+        "dejwk/roo_logging": ">0"
+    }
+}
