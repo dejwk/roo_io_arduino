@@ -5,8 +5,8 @@
 #include <functional>
 
 #include "roo_io/core/multipass_input_stream.h"
-#include "roo_io_arduino/fs/arduino_directory.h"
 #include "roo_io/fs/filesystem.h"
+#include "roo_io_arduino/fs/arduino_directory.h"
 
 namespace roo_io {
 
@@ -26,12 +26,15 @@ class ArduinoMountImpl : public MountImpl {
 
   Status rmdir(const char* path) override;
 
-  std::unique_ptr<DirectoryImpl> opendir(const char* path) override;
+  std::unique_ptr<DirectoryImpl> opendir(std::shared_ptr<MountImpl> mount,
+                                         const char* path) override;
 
-  std::unique_ptr<MultipassInputStream> fopen(const char* path) override;
+  std::unique_ptr<MultipassInputStream> fopen(std::shared_ptr<MountImpl> mount,
+                                              const char* path) override;
 
   std::unique_ptr<OutputStream> fopenForWrite(
-      const char* path, FileUpdatePolicy update_policy) override;
+      std::shared_ptr<MountImpl> mount, const char* path,
+      FileUpdatePolicy update_policy) override;
 
   bool active() const override { return active_; }
 

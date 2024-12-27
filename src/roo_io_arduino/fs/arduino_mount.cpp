@@ -131,7 +131,8 @@ Status ArduinoMountImpl::rmdir(const char* path) {
   return kUnknownIOError;
 }
 
-std::unique_ptr<DirectoryImpl> ArduinoMountImpl::opendir(const char* path) {
+std::unique_ptr<DirectoryImpl> ArduinoMountImpl::opendir(
+    std::shared_ptr<MountImpl> mount, const char* path) {
   if (!active_) return DirectoryError(kNotMounted);
   fs::File f = fs_.open(path, "r");
   roo_io::Status status = roo_io::kOk;
@@ -143,11 +144,11 @@ std::unique_ptr<DirectoryImpl> ArduinoMountImpl::opendir(const char* path) {
     }
   }
   return std::unique_ptr<DirectoryImpl>(
-      new ArduinoDirectoryImpl(std::move(f), status));
+      new ArduinoDirectoryImpl(std::move(mount), std::move(f), status));
 }
 
 std::unique_ptr<MultipassInputStream> ArduinoMountImpl::fopen(
-    const char* path) {
+    std::shared_ptr<MountImpl> mount, const char* path) {
   if (path == nullptr || path[0] != '/') {
     return InputError(kInvalidPath);
   }
@@ -164,11 +165,12 @@ std::unique_ptr<MultipassInputStream> ArduinoMountImpl::fopen(
     return InputError(kNotFile);
   }
   return std::unique_ptr<MultipassInputStream>(
-      new ArduinoFileInputStream(std::move(f)));
+      new ArduinoFileInputStream(std::move(mount), std::move(f)));
 }
 
 std::unique_ptr<OutputStream> ArduinoMountImpl::fopenForWrite(
-    const char* path, FileUpdatePolicy update_policy) {
+    std::shared_ptr<MountImpl> mount, const char* path,
+    FileUpdatePolicy update_policy) {
   if (path == nullptr || path[0] != '/') {
     return OutputError(kInvalidPath);
   }
@@ -199,7 +201,7 @@ std::unique_ptr<OutputStream> ArduinoMountImpl::fopenForWrite(
     return OutputError(kOpenError);
   }
   return std::unique_ptr<OutputStream>(
-      new ArduinoFileOutputStream(std::move(f)));
+      new ArduinoFileOutputStream(std::move(mount), std::move(f)));
 }
 
 void ArduinoMountImpl::deactivate() { active_ = false; }
