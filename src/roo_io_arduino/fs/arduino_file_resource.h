@@ -29,8 +29,8 @@ class ArduinoFileResource : public MultipassResource {
 // file resource.
 class ExtendedArduinoFileResource : public roo_io::MultipassResource {
  public:
-  ExtendedArduinoFileResource(fs::FS& fs, std::string path)
-      : fs_(nullptr), arduino_fs_(&fs), path_(std::move(path)) {}
+  ExtendedArduinoFileResource(fs::FS& fs, String path)
+      : fs_(nullptr), arduino_fs_(&fs), path_(path.c_str()) {}
 
   ExtendedArduinoFileResource(roo_io::Filesystem& fs, std::string path)
       : fs_(&fs), arduino_fs_(nullptr), path_(std::move(path)) {}
