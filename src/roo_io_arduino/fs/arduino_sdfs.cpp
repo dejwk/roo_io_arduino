@@ -2,13 +2,13 @@
 
 namespace roo_io {
 
-ArduinoSdFs::ArduinoSdFs(uint8_t ss_pin, SDFS& sd, decltype(SPI)& spi,
+ArduinoSdFs::ArduinoSdFs(uint8_t cs_pin, SDFS& sd, decltype(SPI)& spi,
                          uint32_t freq)
-    : sd_(sd), spi_(spi), ss_pin_(ss_pin), frequency_(freq) {}
+    : sd_(sd), spi_(&spi), cs_pin_(cs_pin), frequency_(freq) {}
 
 MountImpl::MountResult ArduinoSdFs::mountImpl(
     std::function<void()> unmount_fn) {
-  if (!sd_.begin(ss_pin_, spi_, frequency_)) {
+  if (!sd_.begin(cs_pin_, *spi_, frequency_)) {
     return MountImpl::MountError(kGenericMountError);
   }
   return MountImpl::Mounted(
