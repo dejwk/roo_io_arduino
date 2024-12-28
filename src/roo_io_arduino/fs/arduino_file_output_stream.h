@@ -9,44 +9,18 @@ namespace roo_io {
 
 class ArduinoFileOutputStream : public OutputStream {
  public:
-  ArduinoFileOutputStream(Status error) : file_(), status_(error) {}
+  ArduinoFileOutputStream(Status error);
 
   // Use only if you know that the filesystem is and will remain mounted.
-  ArduinoFileOutputStream(fs::File file)
-      : ArduinoFileOutputStream(nullptr, std::move(file)) {}
+  ArduinoFileOutputStream(fs::File file);
 
-  ArduinoFileOutputStream(std::shared_ptr<MountImpl> mount, fs::File file)
-      : mount_(std::move(mount)),
-        file_(std::move(file)),
-        status_(file_ ? kOk : kClosed) {}
+  ArduinoFileOutputStream(std::shared_ptr<MountImpl> mount, fs::File file);
 
-  size_t write(const byte* buf, size_t count) override {
-    if (status_ != kOk) return 0;
-    size_t result = file_.write((const uint8_t*)buf, count);
-    if (result < count) {
-      status_ = roo_io::kWriteError;
-      mount_.reset();
-    }
-    return result;
-  }
+  size_t write(const byte* buf, size_t count) override;
 
-  void flush() override {
-    if (status_ == kClosed) return;
-    file_.flush();
-    if (!file_) {
-      status_ = kWriteError;
-      mount_.reset();
-    }
-  }
+  void flush() override;
 
-  void close() override {
-    mount_.reset();
-    if (status_ == kClosed) return;
-    file_.close();
-    if (status_ == kOk) {
-      status_ = kClosed;
-    }
-  }
+  void close() override;
 
   Status status() const override { return status_; }
 

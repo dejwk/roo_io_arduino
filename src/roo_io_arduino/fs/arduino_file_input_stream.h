@@ -9,57 +9,18 @@ namespace roo_io {
 
 class ArduinoFileInputStream : public MultipassInputStream {
  public:
-  ArduinoFileInputStream(Status error) : file_(), status_(error) {}
+  ArduinoFileInputStream(Status error);
 
   // Use only if you know that the filesystem is and will remain mounted.
-  ArduinoFileInputStream(fs::File file)
-      : ArduinoFileInputStream(nullptr, std::move(file)) {}
+  ArduinoFileInputStream(fs::File file);
 
-  ArduinoFileInputStream(std::shared_ptr<MountImpl> mount, fs::File file)
-      : mount_(std::move(mount)),
-        file_(std::move(file)),
-        status_(file_ ? kOk : kClosed) {}
+  ArduinoFileInputStream(std::shared_ptr<MountImpl> mount, fs::File file);
 
-  size_t read(byte* buf, size_t count) override {
-    if (status_ != kOk) return 0;
-    size_t result = file_.read((uint8_t*)buf, count);
-    if (result == 0) {
-      status_ = kEndOfStream;
-      return 0;
-    } else if (result == ((size_t)(-1))) {
-      // Indicates an error.
-      status_ = kReadError;
-      mount_.reset();
-      return 0;
-    }
-    return result;
-  }
+  size_t read(byte* buf, size_t count) override;
 
-  void seek(uint64_t offset) override {
-    if (status_ != kOk && status_ != kEndOfStream) return;
-    if (file_.seek(offset)) {
-      status_ = kOk;
-    } else {
-      status_ = kSeekError;
-      mount_.reset();
-    }
-  }
+  void seek(uint64_t offset) override;
 
-  void skip(uint64_t count) override {
-    if (count < 64) {
-      byte buf[count];
-      readFully(buf, count);
-      return;
-    }
-    if (!file_.seek(count, SeekCur)) {
-      status_ = kSeekError;
-      mount_.reset();
-      return;
-    }
-    if (file_.position() > file_.size()) {
-      status_ = kEndOfStream;
-    }
-  }
+  void skip(uint64_t count) override;
 
   uint64_t position() const override { return file_.position(); }
 
@@ -67,11 +28,7 @@ class ArduinoFileInputStream : public MultipassInputStream {
 
   bool isOpen() const override { return file_.operator bool(); }
 
-  void close() override {
-    file_.close();
-    mount_.reset();
-    status_ = kClosed;
-  }
+  void close() override;
 
   Status status() const override { return status_; }
 

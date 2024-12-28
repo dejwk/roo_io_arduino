@@ -12,16 +12,9 @@ namespace roo_io {
 class ArduinoDirectoryImpl : public DirectoryImpl {
  public:
   ArduinoDirectoryImpl(std::shared_ptr<MountImpl> mount, fs::File file,
-                       Status status)
-      : mount_(std::move(mount)), file_(std::move(file)), status_(status) {}
+                       Status status);
 
-  bool close() override {
-    mount_.reset();
-    entry_.close();
-    file_.close();
-    if (status_ == kOk) status_ = kClosed;
-    return true;
-  }
+  bool close() override;
 
   const char* path() const override { return file_.path(); }
 
@@ -29,35 +22,9 @@ class ArduinoDirectoryImpl : public DirectoryImpl {
 
   Status status() const override { return status_; }
 
-  void rewind() override {
-    if (status_ != kOk && status_ != kEndOfStream) return;
-    file_.rewindDirectory();
-    if (file_) {
-      status_ = kOk;
-    } else {
-      status_ = kUnknownIOError;
-      mount_.reset();
-    }
-    next_ = "";
-  }
+  void rewind() override;
 
-  bool read(Directory::Entry& entry) override {
-    if (status_ != kOk) return false;
-    if (!file_) {
-      status_ = kClosed;
-      mount_.reset();
-      return false;
-    }
-    entry_ = file_.openNextFile();
-    if (!entry_) {
-      status_ = kEndOfStream;
-      return false;
-    }
-    setEntry(entry, entry_.path(),
-             strlen(entry_.path()) - strlen(entry_.name()),
-             entry_.isDirectory());
-    return true;
-  }
+  bool read(Directory::Entry& entry) override;
 
  private:
   std::shared_ptr<MountImpl> mount_;
