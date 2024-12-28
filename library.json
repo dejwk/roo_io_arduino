@@ -14,7 +14,7 @@
         "type": "git",
         "url": "https://github.com/dejwk/roo_io_arduino"
     },
-    "version": "1.0.1",
+    "version": "1.1.0",
     "homepage": "https://github.com/dejwk/roo_io_arduino",
     "frameworks": [
         "Arduino"
@@ -27,7 +27,7 @@
         "examples/**/*.ino"
     ],
     "dependencies": {
-        "dejwk/roo_io": ">0",
+        "dejwk/roo_io": ">=1.1.0",
         "FS": ">0",
         "SD": ">0",
         "dejwk/roo_logging": ">0"
