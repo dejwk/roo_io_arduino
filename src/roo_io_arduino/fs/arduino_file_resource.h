@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "roo_io.h"
 #include "roo_io/core/resource.h"
 #include "roo_io/fs/filesystem.h"
 #include "roo_io_arduino/fs/arduino_file_input_stream.h"
@@ -43,8 +44,8 @@ class ExtendedArduinoFileResource : public roo_io::MultipassResource {
   }
 
  private:
-  ::fs::FS* arduino_fs_;
   roo_io::Filesystem* fs_;
+  ::fs::FS* arduino_fs_;
   std::string path_;
 };
 
