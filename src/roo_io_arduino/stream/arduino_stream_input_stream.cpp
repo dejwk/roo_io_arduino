@@ -12,7 +12,7 @@ size_t ArduinoStreamInputStream::tryRead(byte* buf, size_t count) {
   size_t available = input_.available();
   if (count > available) count = available;
   if (count == 0) return 0;
-  return input_.readBytes(buf, count);
+  return input_.readBytes((char*)buf, count);
 }
 
 size_t ArduinoStreamInputStream::read(byte* buf, size_t count) {
@@ -20,7 +20,7 @@ size_t ArduinoStreamInputStream::read(byte* buf, size_t count) {
   size_t available = input_.available();
   if (count > available) count = available;
   if (count == 0) ++count;
-  return input_.readBytes(buf, count);
+  return input_.readBytes((char*)buf, count);
 }
 
 }  // namespace roo_io
