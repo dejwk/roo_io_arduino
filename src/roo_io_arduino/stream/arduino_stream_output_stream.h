@@ -16,6 +16,8 @@ class ArduinoStreamOutputStream : public OutputStream {
 
   size_t write(const byte* buf, size_t count) override;
 
+  size_t writeFully(const byte* buf, size_t count) override;
+
   void flush() override;
 
   void close() override;

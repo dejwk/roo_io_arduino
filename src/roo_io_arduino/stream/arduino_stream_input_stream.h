@@ -16,6 +16,8 @@ class ArduinoStreamInputStream : public InputStream {
 
   size_t read(byte* buf, size_t count) override;
 
+  size_t readFully(byte* buf, size_t count) override;
+
   bool isOpen() const override;
 
   void close() override { status_ = kClosed; }

@@ -17,10 +17,23 @@ size_t ArduinoStreamInputStream::tryRead(byte* buf, size_t count) {
 
 size_t ArduinoStreamInputStream::read(byte* buf, size_t count) {
   if (!isOpen() || count == 0) return 0;
-  size_t available = input_.available();
-  if (count > available) count = available;
-  if (count == 0) ++count;
-  return input_.readBytes((char*)buf, count);
+  while (true) {
+    size_t available = input_.available();
+    if (count > available) count = available;
+    if (count == 0) ++count;
+    size_t result = input_.readBytes((char*)buf, count);
+    if (result > 0) return result;
+  }
+}
+
+size_t ArduinoStreamInputStream::readFully(byte* buf, size_t count) {
+  if (!isOpen() || count == 0) return 0;
+  size_t total = 0;
+  while (total < count) {
+    size_t result = input_.readBytes((char*)buf, count);
+    total += result;
+  }
+  return total;
 }
 
 }  // namespace roo_io

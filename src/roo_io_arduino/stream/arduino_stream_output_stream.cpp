@@ -21,9 +21,15 @@ size_t ArduinoStreamOutputStream::write(const byte* buf, size_t count) {
   return output_.write((const uint8_t*)buf, count);
 }
 
+size_t ArduinoStreamOutputStream::writeFully(const byte* buf, size_t count) {
+  if (status() != kOk) return 0;
+  return output_.write((const uint8_t*)buf, count);
+}
+
 void ArduinoStreamOutputStream::flush() {
-  if (status() != kOk) return;
-  output_.flush();
+  // Arduino 'flush' is stronger than our semantics, in that it waits for the
+  // data to be actually sent out, which we don't require. if (status() != kOk)
+  // return; output_.flush();
 }
 
 void ArduinoStreamOutputStream::close() {
