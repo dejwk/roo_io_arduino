@@ -6,7 +6,7 @@ cc_test(
     # includes = glob(["**/*.h"]),
     linkstatic = 1,
     deps = [
-        "//lib/roo_io_arduino:testing",
+        "@roo_io_arduino//:testing",
         ":fakefs_arduino"
     ],
 )
@@ -19,7 +19,7 @@ cc_test(
     # includes = glob(["**/*.h"]),
     linkstatic = 1,
     deps = [
-        "//lib/roo_io/test:testing",
+        "@roo_io//test:testing",
         ":fakefs_arduino"
     ],
 )
@@ -32,7 +32,7 @@ cc_test(
     # includes = glob(["**/*.h"]),
     linkstatic = 1,
     deps = [
-        "//lib/roo_io/test:testing",
+        "@roo_io//test:testing",
         ":fakefs_arduino"
     ],
 )
@@ -46,7 +46,7 @@ cc_library(
     # includes = glob(["**/*.h"]),
     linkstatic = 1,
     deps = [
-        "//lib/roo_io_arduino:testing",
-        "//lib/roo_io/test/fs:fakefs"
+        "@roo_io_arduino//:testing",
+        "@roo_io//test/fs:fakefs"
     ],
 )

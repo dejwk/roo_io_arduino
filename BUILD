@@ -12,10 +12,10 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "//lib/roo_io",
-        "//lib/roo_logging",
-        "//roo_testing/frameworks/arduino-esp32-2.0.4/libraries/FS",
-        "//roo_testing/frameworks/arduino-esp32-2.0.4/libraries/SD",
+        "@roo_io",
+        "@roo_logging",
+        "@roo_testing//roo_testing/frameworks/arduino-esp32-2.0.4/libraries/FS",
+        "@roo_testing//roo_testing/frameworks/arduino-esp32-2.0.4/libraries/SD",
     ],
 )
 
@@ -36,6 +36,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":roo_io_arduino",
-        "//roo_testing:arduino_gtest_main",
+        "@roo_testing//roo_testing:arduino_gtest_main",
     ],
 )
