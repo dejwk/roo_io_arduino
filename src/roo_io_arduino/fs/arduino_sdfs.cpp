@@ -1,9 +1,15 @@
+
+#include <Arduino.h>
+
+#ifdef ESP32
+
 #include "roo_io_arduino/fs/arduino_sdfs.h"
 
 namespace roo_io {
 
-ArduinoSdFs::ArduinoSdFs(uint8_t cs_pin, SDFS& sd, decltype(SPI)& spi,
-                         uint32_t freq)
+ArduinoSdFs::ArduinoSdFs(uint8_t cs_pin, decltype(::SD)& sd,
+                         decltype(::SPI)& spi, uint32_t freq)
+
     : sd_(sd), spi_(&spi), cs_pin_(cs_pin), frequency_(freq) {}
 
 MountImpl::MountResult ArduinoSdFs::mountImpl(
@@ -24,3 +30,5 @@ Filesystem::MediaPresence ArduinoSdFs::checkMediaPresence() {
 ArduinoSdFs SD;
 
 }  // namespace roo_io
+
+#endif
