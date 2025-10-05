@@ -8,7 +8,8 @@ namespace roo_io {
 namespace {
 
 Status CheckParentage(FS& fs, const char* path) {
-  std::unique_ptr<char[]> dup_path(strdup(path));
+  std::unique_ptr<char[]> dup_path(new char[strlen(path) + 1]);
+  strcpy(dup_path.get(), path);
   size_t pos = 0;
   while (true) {
     while (dup_path[pos] == '/') ++pos;
@@ -78,7 +79,8 @@ Status ArduinoMountImpl::rename(const char* pathFrom, const char* pathTo) {
     return kInvalidPath;
   }
   // Check if the destination directory exists.
-  std::unique_ptr<char[]> dup(strdup(pathTo));
+  std::unique_ptr<char[]> dup(new char[strlen(pathTo) + 1]);
+  strcpy(dup.get(), pathTo);
   char* last_slash = strrchr(dup.get(), '/');
   if (last_slash != nullptr) {
     *last_slash = 0;
