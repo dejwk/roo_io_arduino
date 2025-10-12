@@ -3,7 +3,7 @@
 namespace roo_io {
 
 ArduinoStreamInputStream::ArduinoStreamInputStream(Stream& input)
-    : status_(kOk), input_(input) {}
+    : input_(input), status_(kOk) {}
 
 bool ArduinoStreamInputStream::isOpen() const { return status() == kOk; }
 
@@ -23,6 +23,7 @@ size_t ArduinoStreamInputStream::read(byte* buf, size_t count) {
     if (count == 0) ++count;
     size_t result = input_.readBytes((char*)buf, count);
     if (result > 0) return result;
+    yield();
   }
 }
 
@@ -32,6 +33,7 @@ size_t ArduinoStreamInputStream::readFully(byte* buf, size_t count) {
   while (total < count) {
     size_t result = input_.readBytes((char*)buf, count);
     total += result;
+    if (total < count) yield();
   }
   return total;
 }
