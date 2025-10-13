@@ -18,24 +18,3 @@ cc_library(
         "@roo_testing//roo_testing/frameworks/arduino-esp32-2.0.4/libraries/SD",
     ],
 )
-
-cc_library(
-    name = "testing",
-    srcs = glob(
-        [
-            "src/**/*.cpp",
-            "src/**/*.h",
-        ],
-        exclude = ["test/**"],
-    ),
-    defines = ["ROO_IO_TESTING"],
-    alwayslink = 1,
-    includes = [
-        "src",
-    ],
-    visibility = ["//visibility:public"],
-    deps = [
-        ":roo_io_arduino",
-        "@roo_testing//roo_testing:arduino_gtest_main",
-    ],
-)
