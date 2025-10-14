@@ -2,7 +2,6 @@ cc_library(
     name = "roo_io_arduino",
     srcs = glob(
         [
-            "src/**/*.cpp",
             "src/**/*.h",
         ],
         exclude = ["test/**"],
