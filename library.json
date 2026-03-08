@@ -1,8 +1,7 @@
 {
     "name": "roo_io_arduino",
     "description": "Arduino filesystem adapters for the roo_io library.",
-    "keywords": [
-    ],
+    "keywords": [],
     "authors": [
         {
             "name": "Dawid Kurzyniec",
@@ -28,7 +27,7 @@
         "examples/**/*.ino"
     ],
     "dependencies": {
-        "dejwk/roo_io": ">=2.0.1",
-        "dejwk/roo_logging": ">=1.4.0"
+        "dejwk/roo_io": ">=2.1.4",
+        "dejwk/roo_logging": ">=1.5.3"
     }
 }
